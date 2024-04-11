@@ -3,10 +3,12 @@
 from flask import Flask, jsonify, request, make_response
 from flask_migrate import Migrate
 from flask_restful import Api, Resource
+from flask_cors import CORS
 
 from models import db, Plant
 
 app = Flask(__name__)
+CORS(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///plants.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.json.compact = False
@@ -14,7 +16,9 @@ app.json.compact = False
 migrate = Migrate(app, db)
 db.init_app(app)
 
+
 api = Api(app)
+
 
 
 class Plants(Resource):
@@ -70,7 +74,7 @@ class PlantByID(Resource):
             "message" : "plant deleted"
         }
 
-        response=make_response(response_dict, 200)
+        response=make_response(response_dict, 204)
         return response
         
 
